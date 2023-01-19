@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 
+const INITIAL_STATE = {
+  height: '0',
+  width: '0',
+  backgroundColor: ""
+};
+
 /** Form for creating a box
+ *
  * props
- * -function to create box
+ * - addBox: function to create box
  *
  * state
  * - formData
  *
  *
  * BoxList > NewBoxForm
- *  */
+ */
 
-function NewBoxForm() {
-  const [formData, setFormData] = useState({
-    height: 0,
-    width: 0,
-    backgroundColor: "",
-  });
+function NewBoxForm({ addBox }) {
+  const [formData, setFormData] = useState(INITIAL_STATE);
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -27,14 +30,38 @@ function NewBoxForm() {
     }));
   }
 
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    addBox(formData);
+    setFormData(INITIAL_STATE);
+  }
+
   return (
-    <form className="NewBoxForm">
-      <label htmlFor="height-input">Height:</label>
-      <input id="height-input" name="height" />
-      <label htmlFor="width-input">Width:</label>
-      <input id="width-input" name="width" />
-      <label htmlFor="background-color-input">Background Color:</label>
-      <input id="background-color-input" name="backgroundColor" />
+    <form className="NewBoxForm" onSubmit={handleSubmit}>
+      <label htmlFor="heightInput">Height:</label>
+      <input
+        id="heightInput"
+        name="height"
+        value={formData.height}
+        onChange={handleChange}
+      />
+
+      <label htmlFor="widthInput">Width:</label>
+      <input
+        id="widthInput"
+        name="width"
+        value={formData.width}
+        onChange={handleChange}
+      />
+
+      <label htmlFor="backgroundColorInput">Background Color:</label>
+      <input
+        id="backgroundColorInput"
+        name="backgroundColor"
+        value={formData.backgroundColor}
+        onChange={handleChange}
+      />
+
       <button>Add!</button>
     </form>
   );
